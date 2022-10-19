@@ -1,5 +1,5 @@
 ﻿using JiraClone.Domain.Contract.IssuesViewModel;
-using JiraClone.Domain.Contract.UsersViewModel;
+using JiraClone.Domain.Contract.UserViewModel;
 using JiraClone.Domain.Entities;
 using JiraClone.EntityFrameworkCore;
 using JiraClone.Services.IServices;
@@ -21,11 +21,11 @@ namespace JiraClone.Services.Services
             _jiraCloneDbContext = jiraDbContext;
         }
 
-        public List<IssuesViewModel> AllIssues()
+        public async Task<List<IssuesViewModel>> AllIssues()
         {
             try
             {
-                var issues = _jiraCloneDbContext.Issues.Select(x => new IssuesViewModel
+                var issues = await _jiraCloneDbContext.Issues.Select(x => new IssuesViewModel
                 {
                     Assignee = new UserViewModel
                     {
@@ -45,7 +45,7 @@ namespace JiraClone.Services.Services
                     Type = x.Summary,
                     CreatedOn = x.CreatedOn.ToLongDateString(),
                     UpdatedOn = x.UpdatedOn.ToLongDateString(),
-                }).ToList();
+                }).ToListAsync();
 
                 if (issues == null)
                 {
@@ -67,7 +67,7 @@ namespace JiraClone.Services.Services
         {
             try
             {
-                var issue = _jiraCloneDbContext.Issues.Where(issue => issue.Id == id).Select(x => new IssuesViewModel
+                var issue = await _jiraCloneDbContext.Issues.Where(issue => issue.Id == id).Select(x => new IssuesViewModel
                 {
                     Assignee = new UserViewModel
                     {
@@ -94,7 +94,7 @@ namespace JiraClone.Services.Services
                     throw new Exception("no issue found");
                 }
 
-                return await issue;
+                return issue;
 
             }
             catch (Exception)
@@ -133,7 +133,7 @@ namespace JiraClone.Services.Services
             }
         }
 
-        public async Task<string> UpdateIssue(UpdateIssueViewModel updateIssueViewModel)
+        public async Task<IssuesViewModel> UpdateIssue(UpdateIssueViewModel updateIssueViewModel)
         {
             try
             {
@@ -161,7 +161,16 @@ namespace JiraClone.Services.Services
                         {
                             IssueId = Issue.Id,
                             Summary = Issue.Summary,
-
+                            Description = Issue.Description,
+                            Type = Issue.Type,
+                            Status = Issue.Status,
+                            Priority = Issue.Priority,
+                            Assignee = new UserViewModel
+                            {
+                                Id = Issue.Assignee.Id,
+                                FirstName = Issue.Assignee.FirstName,
+                                LastName = Issue.Assignee.LastName
+                            }
                         };
                     }
                     catch (Exception)
@@ -170,7 +179,7 @@ namespace JiraClone.Services.Services
                         throw;
                     }
                 }
-               
+                throw new Exception("You cannot edit this issue you're not the reporter");
             }
             catch (Exception)
             {

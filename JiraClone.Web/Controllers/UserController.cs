@@ -1,25 +1,25 @@
-﻿using JiraClone.Domain.Contract.IssuesViewModel;
+﻿using JiraClone.Domain.Contract.UserViewModel;
+using JiraClone.Helpers.Formatting;
 using JiraClone.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using JiraClone.Helpers.Formatting;
 
 namespace JiraClone.Web.Controllers
 {
-    public class IssueController : Controller
+    public class UserController : Controller
     {
-        private readonly IIssuesService _issueService;
-        public IActionResult Task()
+        private readonly IUserService _userService;
+        public IActionResult Index()
         {
             return View();
         }
 
-        [Route("createIssue")]
+        [Route("createUser")]
         [HttpPost]
-        public async Task<DataResult> CreateIssue(CreateIssueViewModel model)
+        public async Task<DataResult> CreateIssue(CreateUserViewModel model)
         {
             DataResult dataResult;
             try
@@ -36,7 +36,7 @@ namespace JiraClone.Web.Controllers
 
                 try
                 {
-                    object data = await _issueService.CreateIssue(model);
+                    object data = await _userService.CreateUser(model);
                     dataResult = new DataResult
                     {
                         StatusCode = "200",
@@ -70,9 +70,9 @@ namespace JiraClone.Web.Controllers
             return dataResult;
         }
 
-        [Route("getIssues")]
+        [Route("getUsers")]
         [HttpGet]
-        public async Task<DataResult> AllIssues()
+        public async Task<DataResult> AllUsers()
         {
             DataResult dataResult;
             try
@@ -89,7 +89,7 @@ namespace JiraClone.Web.Controllers
 
                 try
                 {
-                    object data = await _issueService.AllIssues();
+                    object data = await _userService.AllUsers();
                     dataResult = new DataResult
                     {
                         StatusCode = "200",
@@ -123,9 +123,9 @@ namespace JiraClone.Web.Controllers
             return dataResult;
         }
 
-        [Route("getIssue")]
+        [Route("getUser")]
         [HttpGet]
-        public async Task<DataResult> GetIssue(int id)
+        public async Task<DataResult> GetUser(int id)
         {
             DataResult dataResult;
             try
@@ -142,7 +142,7 @@ namespace JiraClone.Web.Controllers
 
                 try
                 {
-                    object data = await _issueService.GetIssueById(id);
+                    object data = await _userService.GetUser(id);
                     dataResult = new DataResult
                     {
                         StatusCode = "200",
@@ -176,9 +176,9 @@ namespace JiraClone.Web.Controllers
             return dataResult;
         }
 
-        [Route("updateIssue")]
+        [Route("updateUser")]
         [HttpPut]
-        public async Task<DataResult> UpdateIssue(UpdateIssueViewModel model)
+        public async Task<DataResult> UpdateUser(UpdateUserViewModel model)
         {
             DataResult dataResult;
             try
@@ -195,7 +195,7 @@ namespace JiraClone.Web.Controllers
 
                 try
                 {
-                    object data = await _issueService.UpdateIssue(model);
+                    object data = await _userService.UpdateUser(model);
                     dataResult = new DataResult
                     {
                         StatusCode = "200",
@@ -229,5 +229,4 @@ namespace JiraClone.Web.Controllers
             return dataResult;
         }
     }
-    }
-
+}

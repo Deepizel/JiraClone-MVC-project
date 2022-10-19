@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace JiraClone.Services.IServices
 {
-    interface IIssuesService
+   public interface IIssuesService
     {
-        List<IssuesViewModel> AllIssues();
+        Task<List<IssuesViewModel>> AllIssues();
         Task<IssuesViewModel> GetIssueById(int id);
         Task<IssuesViewModel> CreateIssue(CreateIssueViewModel viewModel);
-        Task<string> UpdateIssue(UpdateIssueViewModel updateIssueViewModel);
-
-
-
+        Task<IssuesViewModel> UpdateIssue(UpdateIssueViewModel updateIssueViewModel);
+        
     }
 }

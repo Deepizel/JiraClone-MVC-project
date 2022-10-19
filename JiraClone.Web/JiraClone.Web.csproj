@@ -10,7 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JiraClone.EntityFrameworkCore\JiraClone.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\JiraClone.Domain.Contract\JiraClone.Domain.Contract.csproj" />
+    <ProjectReference Include="..\JiraClone.Helpers\JiraClone.Helpers.csproj" />
+    <ProjectReference Include="..\JiraClone.Services\JiraClone.Services.csproj" />
   </ItemGroup>
 
 </Project>
